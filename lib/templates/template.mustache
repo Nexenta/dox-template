@@ -31,7 +31,6 @@
     var idx = Lunr('methods', function () {
       this.ref('id')
       this.field('name', { multiplier: 10 })
-      this.field('parent', { multiplier: 5 })
       this.field('full_description')
     })
 
@@ -90,19 +89,9 @@
 
     <nav>
       <ul>
-        {{#modules}}
-          <li>
-            <a href='#{{name}}'>
-              <h3>{{name}}</h3>
-            </a>
-
-            <ul>
               {{#methods}}
                 <li><a href='#{{name}}'>{{name}}</a></li>
               {{/methods}}
-            </ul>
-          </li>
-        {{/modules}}
       </ul>
     </nav>
 
@@ -115,22 +104,11 @@
         <h1>{{library_name}} <span class='version'>{{version}}</span></h1>
       </header>
 
-      {{#modules}}
-        <article id='{{name}}'>
-          <header>
-            <h2>{{name}}</h2>
-          </header>
-
-          <section>
-            {{{full_description}}}
-          </section>
-
           {{#methods}}
             <section class='method' id='{{name}}'>
               <header>
-                <h3>{{name}}</h3>
+                <h3>{{name}}{{#has_params}} ({{#params}}{{types}} {{name}}, {{/params}}){{/has_params}}</h3>
                 <h4>{{signiture}}</h4>
-                <p class='type'>{{type}}</p>
                 {{#related}}
                   <p class='related'>See: <a href='#{{href}}'>{{name}}</a></p>
                 {{/related}}
@@ -142,7 +120,8 @@
                 {{/has_params}}
                 <ul>
                   {{#params}}
-                    <li>{{name}} - {{description}}</li>
+                    <li>
+                    (<i>{{types}}</i>) {{name}} - {{description}}</li>
                   {{/params}}
                 </ul>
               </section>
@@ -165,8 +144,6 @@
               
             </section>
           {{/methods}}
-        </article>
-      {{/modules}}
     </div>
   </div>
   <script>
